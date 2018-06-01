@@ -54,7 +54,7 @@ public class SideBar extends JSplitPane {
 		playerList.setSelectedIndex(0);
 	}
 	
-	/* Called from ManePanel which is called from main after the MainFrame is constructed */
+	/* Called from MainPanel which is called from main after the MainFrame is constructed */
 	public void addListeners(MainFrame mainFrame, GameEngine gameEngine) {
 		SideBarController listener = new SideBarController(mainFrame, gameEngine);
 		playerList.addListSelectionListener(listener);
