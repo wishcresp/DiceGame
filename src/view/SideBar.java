@@ -179,12 +179,9 @@ public class SideBar extends JSplitPane {
 			int houseRoll = mainFrame.getDicePanel().getDiceTotal(mainFrame.getHouseResult());
 			
 			/* Prints player result */
-			if (playerRoll > houseRoll)
-				result = "Wins";
-			else if (playerRoll < houseRoll)
-				result = "Loses";
-			else
-				result = "Draws";
+			result = playerRoll > houseRoll ? "Wins"
+					: playerRoll < houseRoll ? "Loses"
+					: "Draws";
 			
 			lines = new String[] {
 				player.toString() 
