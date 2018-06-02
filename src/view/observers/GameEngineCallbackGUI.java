@@ -19,18 +19,13 @@ public class GameEngineCallbackGUI implements GameEngineCallback {
 	@Override
 	public void intermediateResult(Player player, DicePair dicePair, GameEngine gameEngine) {
 		
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				
-				/* If a player is selected (not house) */
-				if (mainFrame.getSideBar().playerIsSelected(gameEngine.getAllPlayers().size())) {
-					/* If the player selected is the one rolling */
-					if (player.equals(mainFrame.getSideBar().getSelectedPlayer(gameEngine))) {
-						mainFrame.getDicePanel().refresh(mainFrame, dicePair);
-					}
+		SwingUtilities.invokeLater(() -> {
+			/* If a player is selected (not house) */
+			if (mainFrame.getSideBar().playerIsSelected(gameEngine.getAllPlayers().size())) {
+				/* If the player selected is the one rolling */
+				if (player.equals(mainFrame.getSideBar().getSelectedPlayer(gameEngine))) {
+					mainFrame.getDicePanel().refresh(mainFrame, dicePair);
 				}
-				
 			}
 		});
 			
@@ -39,31 +34,26 @@ public class GameEngineCallbackGUI implements GameEngineCallback {
 	@Override
 	public void result(Player player, DicePair result, GameEngine gameEngine) {
 		
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				
-				/* If a player is selected (not house) */
-				if (mainFrame.getSideBar().playerIsSelected(gameEngine.getAllPlayers().size())) {
-					/* If the player selected is the one rolling */
-					if (player.equals(mainFrame.getSideBar().getSelectedPlayer(gameEngine))) {
-						/* Refresh game details, not player list*/
-						mainFrame.getSideBar().refreshGameDetails(mainFrame, gameEngine);
-						mainFrame.getDicePanel().refresh(mainFrame, result);
-						mainFrame.getToolBar().refresh(mainFrame, gameEngine);
-						mainFrame.getStatusBar().refresh(mainFrame, gameEngine);
-					/* If a different player is selected */
-					} else {
-						/* Append text to status bar */
-						mainFrame.getStatusBar().appendLabel(
-								"Player " + player.getPlayerId() + " has rolled.");
-					}
-				/* If house is selected, refresh toolbar in case all players have rolled*/
-				} else {
+		SwingUtilities.invokeLater(() -> {
+			/* If a player is selected (not house) */
+			if (mainFrame.getSideBar().playerIsSelected(gameEngine.getAllPlayers().size())) {
+				/* If the player selected is the one rolling */
+				if (player.equals(mainFrame.getSideBar().getSelectedPlayer(gameEngine))) {
+					/* Refresh game details, not player list*/
+					mainFrame.getSideBar().refreshGameDetails(mainFrame, gameEngine);
+					mainFrame.getDicePanel().refresh(mainFrame, result);
 					mainFrame.getToolBar().refresh(mainFrame, gameEngine);
 					mainFrame.getStatusBar().refresh(mainFrame, gameEngine);
+				/* If a different player is selected */
+				} else {
+					/* Append text to status bar */
+					mainFrame.getStatusBar().appendLabel(
+							"Player " + player.getPlayerId() + " has rolled.");
 				}
-				
+			/* If house is selected, refresh toolbar in case all players have rolled*/
+			} else {
+				mainFrame.getToolBar().refresh(mainFrame, gameEngine);
+				mainFrame.getStatusBar().refresh(mainFrame, gameEngine);
 			}
 		});
 		
@@ -72,14 +62,9 @@ public class GameEngineCallbackGUI implements GameEngineCallback {
 	@Override
 	public void intermediateHouseResult(DicePair dicePair, GameEngine gameEngine) {
 		
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				
-				if (!mainFrame.getSideBar().playerIsSelected(gameEngine.getAllPlayers().size())) {
-					mainFrame.getDicePanel().refresh(mainFrame, dicePair);
-				}
-				
+		SwingUtilities.invokeLater(() -> {
+			if (!mainFrame.getSideBar().playerIsSelected(gameEngine.getAllPlayers().size())) {
+				mainFrame.getDicePanel().refresh(mainFrame, dicePair);
 			}
 		});
 		
@@ -88,28 +73,22 @@ public class GameEngineCallbackGUI implements GameEngineCallback {
 	@Override
 	public void houseResult(DicePair result, GameEngine gameEngine) {
 		
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
+		SwingUtilities.invokeLater(() -> {
+			/* Ensures no additional players have been added before reporting
+			 * final results */
+			if (mainFrame.getSideBar().allPlayersRolled(gameEngine)) {
 				
-				/* Ensures no additional players have been added before reporting
-				 * final results */
-				if (mainFrame.getSideBar().allPlayersRolled(gameEngine)) {
-					/* Store the house result in mainFrame */
-					mainFrame.setHouseResult(result);
+				/* Update GUI is house is selected */
+				if (!mainFrame.getSideBar().playerIsSelected(
+						gameEngine.getAllPlayers().size())) {
 					
-					/* Update GUI is house is selected */
-					if (!mainFrame.getSideBar().playerIsSelected(
-							gameEngine.getAllPlayers().size())) {	
-						
-						mainFrame.getSideBar().refreshGameDetails(mainFrame, gameEngine);
-						mainFrame.getDicePanel().refresh(mainFrame, result);
-						mainFrame.getStatusBar().refresh(mainFrame, gameEngine);
-					}
+					mainFrame.getSideBar().refreshGameDetails(mainFrame, gameEngine);
+					mainFrame.getDicePanel().refresh(mainFrame, result);
+					mainFrame.getStatusBar().refresh(mainFrame, gameEngine);
 				}
-				/* Updates toolbar on any screen */
-				mainFrame.getToolBar().refresh(mainFrame, gameEngine);
 			}
+			/* Updates toolbar on any screen */
+			mainFrame.getToolBar().refresh(mainFrame, gameEngine);
 		});
 		
 	}

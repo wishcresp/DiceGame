@@ -24,11 +24,6 @@ public class SimplePlayer implements Player {
 	}
 
 	@Override
-	public void setPlayerName(String playerName) {
-		this.playerName = playerName;
-	}
-
-	@Override
 	public int getPoints() {
 		return this.points;
 	}

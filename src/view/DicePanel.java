@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.FlowLayout;
-
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,7 +9,6 @@ import java.awt.Insets;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import controller.DicePanelController;
 import model.interfaces.DicePair;
 
@@ -26,12 +24,11 @@ public class DicePanel extends JPanel {
 	private final String diceImages[] = {"res/dice_0.png", "res/dice_1.png", "res/dice_2.png",
 		"res/dice_3.png", "res/dice_4.png", "res/dice_5.png", "res/dice_6.png"};
 
-	public DicePanel() {
+	DicePanel() {
 		
 		/* Dice Images and total */
 		diceIcon1 = new ImageIcon(diceImages[0]);
 		diceIcon2 = new ImageIcon(diceImages[0]);
-		
 		diceLabel1 = new JLabel(diceIcon1);
 		diceLabel2 = new JLabel(diceIcon2);
 		diceTotal = new JLabel(defaultTotalText);
@@ -66,7 +63,7 @@ public class DicePanel extends JPanel {
 	}
 	
 	/* Adds a listener for panel resizing */
-	public void addListeners(MainFrame mainFrame) {
+	void addListeners(MainFrame mainFrame) {
 		this.addComponentListener(new DicePanelController(mainFrame));
 	}
 	
@@ -108,7 +105,7 @@ public class DicePanel extends JPanel {
 	}
 	
 	/* Calculates and returns the dice total */
-	public int getDiceTotal(DicePair dicePair) {
+	int getDiceTotal(DicePair dicePair) {
 		return dicePair.getDice1() + dicePair.getDice2();
 	}
 	

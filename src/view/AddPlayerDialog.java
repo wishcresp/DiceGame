@@ -18,7 +18,7 @@ public class AddPlayerDialog extends JFrame {
 	
 	private final String defaultPoints = "1000";
 	
-	public AddPlayerDialog() {
+	AddPlayerDialog() {
 		/* Main Panel */
 		JPanel panel = new JPanel();
 			
@@ -52,7 +52,7 @@ public class AddPlayerDialog extends JFrame {
 	}
 	
 	/* Adds controller for confirm button */
-	public void addListeners(MainFrame mainFrame, GameEngine gameEngine) {
+	void addListeners(MainFrame mainFrame, GameEngine gameEngine) {
 		addPlayerBtn.addActionListener(new AddPlayerDialogController(mainFrame, gameEngine));
 	}
 	

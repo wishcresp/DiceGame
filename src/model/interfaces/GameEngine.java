@@ -16,7 +16,7 @@ public interface GameEngine
 	/**
 	 * set the default size of the dice (Casino style!)
 	 */
-	public static int NUM_FACES = 6;
+	int NUM_FACES = 6;
 
 	/**
 	 * the implementation should forward the call to the player class so the bet is set per player
@@ -28,7 +28,7 @@ public interface GameEngine
 	 *            the bet in points
 	 * @return true if the player had sufficient points and the bet was placed
 	 */
-	public abstract boolean placeBet(Player player, int bet);
+	boolean placeBet(Player player, int bet);
 
 	/**
 	 * roll the dice progressing from the initialDelay to the finalDelay in
@@ -57,7 +57,7 @@ public interface GameEngine
 	 * @see view.observers.interfaces.GameEngineCallback
 	 * 
 	 */
-	public abstract void rollPlayer(Player player, int initialDelay, int finalDelay, int delayIncrement);
+	void rollPlayer(Player player, int initialDelay, int finalDelay, int delayIncrement);
 
 	/**
 	 * Same as rollPlayer() but rolls for the house and calls the house versions
@@ -73,27 +73,26 @@ public interface GameEngine
 	 * 
 	 * @see GameEngine#rollPlayer(Player, int, int, int)
 	 */
-	public abstract void rollHouse(int initialDelay, int finalDelay, int delayIncrement);
+	void rollHouse(int initialDelay, int finalDelay, int delayIncrement);
 
 	/**
 	 * @param player
 	 *            to add to game
 	 */
-	public abstract void addPlayer(Player player);
+	void addPlayer(Player player);
 
 	/**
-	 * @param id
-	 *            id of player to retrieve
+	 * @param index
+	 *            index of player position in collection to get
 	 * @return the corresponding Player instance or null if Player doesn't exist
 	 */
-	public abstract Player getPlayer(String id);
+	Player getPlayer(int index);
 
 	/**
 	 * @param player
 	 *            to remove from game
-	 * @return true if the player existed
 	 */
-	public abstract boolean removePlayer(Player player);
+	void removePlayer(Player player);
 
 	/**
 	 * @param gameEngineCallback
@@ -103,7 +102,7 @@ public interface GameEngine
 	 *            you will write a different implementation for console and GUI
 	 *            implementations (Assignments part 1 and 2)
 	 */
-	public abstract void addGameEngineCallback(GameEngineCallback gameEngineCallback);
+	void addGameEngineCallback(GameEngineCallback gameEngineCallback);
 
 	/**
 	 * @param gameEngineCallback
@@ -111,12 +110,24 @@ public interface GameEngine
 	 *            UI updates
 	 * @return true if the gameEngineCallback existed
 	 */
-	public abstract boolean removeGameEngineCallback(GameEngineCallback gameEngineCallback);
+	boolean removeGameEngineCallback(GameEngineCallback gameEngineCallback);
 
 	/**
 	 * 
 	 * @return an unmodifiable collection of all Players
 	 * @see model.interfaces.Player
 	 */
-	public abstract Collection<Player> getAllPlayers();
+	Collection<Player> getAllPlayers();
+	
+	/**
+	 *
+	 * @return house roll
+	 */
+	DicePair getHouseResult();
+	
+	/**
+	 *
+	 * clear house roll
+	 */
+	void clearHouseResult();
 }

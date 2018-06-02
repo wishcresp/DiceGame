@@ -99,21 +99,18 @@ public class ToolBarController extends KeyAdapter implements ActionListener {
 	private void rollDice() {
 		
 		/* Long roll method called in a new thread */
-		new Thread() {
-			@Override
-			public void run() {
-				/* Roll Player */
-				if (mainFrame.getSideBar().playerIsSelected(gameEngine.getAllPlayers().size())) {
-					
-					gameEngine.rollPlayer(mainFrame.getSideBar().getSelectedPlayer(gameEngine),
-							initialDelay, finalDelay, delayIncrement);
+		new Thread(() -> {
+			/* Roll Player */
+			if (mainFrame.getSideBar().playerIsSelected(gameEngine.getAllPlayers().size())) {
 				
-				/* Roll house*/
-				} else {
-					gameEngine.rollHouse(initialDelay, finalDelay, delayIncrement);	
-				}
-			}	
-		}.start();
+				gameEngine.rollPlayer(mainFrame.getSideBar().getSelectedPlayer(gameEngine),
+						initialDelay, finalDelay, delayIncrement);
+			
+			/* Roll house*/
+			} else {
+				gameEngine.rollHouse(initialDelay, finalDelay, delayIncrement);
+			}
+		}).start();
 		
 		/* Updates GUI */
 		mainFrame.getStatusBar().clearLabel();
@@ -146,8 +143,8 @@ public class ToolBarController extends KeyAdapter implements ActionListener {
 			player.placeBet(0);
 		}
 		
-		/* Resets the house result stored in the mainFrame */
-		mainFrame.setHouseResult(null);
+		/* Resets the house result */
+		gameEngine.clearHouseResult();
 		/* Updates GUI*/
 		mainFrame.getToolBar().setNextRoundBtnEnabled(false);
 		mainFrame.getSideBar().setSelectedPlayer(0);

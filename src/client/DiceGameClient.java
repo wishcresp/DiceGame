@@ -14,16 +14,13 @@ public class DiceGameClient {
 		/* Model */
 		final GameEngine gameEngine = new GameEngineImpl();
 		
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				/* View */
-				final MainFrame mainFrame = new MainFrame();
-				/* Controllers */
-				mainFrame.addListeners(gameEngine);
-				/* GUI Observer/Callback */
-				gameEngine.addGameEngineCallback(new GameEngineCallbackGUI(mainFrame));
-			}			
+		SwingUtilities.invokeLater(() -> {
+			/* View */
+			final MainFrame mainFrame = new MainFrame();
+			/* Controllers */
+			mainFrame.addListeners(gameEngine);
+			/* GUI Observer/Callback */
+			gameEngine.addGameEngineCallback(new GameEngineCallbackGUI(mainFrame));
 		});
 		
 		/* Observer/Callback */

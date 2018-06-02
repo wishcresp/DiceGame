@@ -18,8 +18,7 @@ import model.interfaces.Player;
 public class ToolBar extends JToolBar {
 	
 	private static final long serialVersionUID = 1L;
-
-	private ImageIcon diceIcon;
+	
 	private JLabel diceImgAnimation;
 	private JTextField betField;
 	private JButton betBtn, rollBtn, nextPlayerBtn, nextRoundBtn;
@@ -33,7 +32,7 @@ public class ToolBar extends JToolBar {
 			"res/dice_blur_3.png",
 			"res/dice_blur_4.png"};
 	
-	public ToolBar() {
+	ToolBar() {
 		
 		JLabel title = new JLabel("Dice Game");
 		title.setFont(new Font(null, Font.ITALIC, 24));
@@ -90,7 +89,7 @@ public class ToolBar extends JToolBar {
 		this.add(nextRoundBtn);
 	}
 	
-	public void addListeners(MainFrame mainFrame, GameEngine gameEngine) {
+	void addListeners(MainFrame mainFrame, GameEngine gameEngine) {
 		ToolBarController listener = new ToolBarController(mainFrame, gameEngine);
 		betBtn.addActionListener(listener);
 		rollBtn.addActionListener(listener);
@@ -111,10 +110,10 @@ public class ToolBar extends JToolBar {
 			/* If the player has not bet, enable the bet input */
 			setBetInputEnabled(player.getBet() == 0);
 			/* If the player has not rolled and has bet, enable the roll button */
-			rollBtn.setEnabled(player.getBet() != 0 && player.getRollResult() == null);
+			setRollDiceBtnEnabled(player.getBet() != 0 && player.getRollResult() == null);
 			/* If the player has rolled, enable the next player button*/
-			nextPlayerBtn.setEnabled(player.getRollResult() != null);
-			
+			setNextPlayerBtnEnabled(player.getRollResult() != null);
+
 			/* Sets the text in the bet field */
 			if (player.getBet() != 0)
 				betField.setText(String.valueOf(player.getBet()));
@@ -127,7 +126,7 @@ public class ToolBar extends JToolBar {
 			 * and the house has not rolled */
 			rollBtn.setEnabled(gameEngine.getAllPlayers().size() > 0
 					&& mainFrame.getSideBar().allPlayersRolled(gameEngine) 
-					&& mainFrame.getHouseResult() == null);
+					&& gameEngine.getHouseResult() == null);
 			/* Disable other buttons */
 			setBetInputEnabled(false);
 			nextPlayerBtn.setEnabled(false);
@@ -135,7 +134,7 @@ public class ToolBar extends JToolBar {
 		}
 		
 		/* Enables the next round button when house has rolled */
-		setNextRoundBtnEnabled(mainFrame.getHouseResult() != null);
+		setNextRoundBtnEnabled(gameEngine.getHouseResult() != null);
 		
 		/* Sets the active button for enter key presses */
 		setActiveButton(mainFrame, gameEngine);
@@ -160,14 +159,14 @@ public class ToolBar extends JToolBar {
 		/* If house is selected */
 		} else {
 			/* If house has not rolled  */
-			activeBtn = mainFrame.getHouseResult() == null ? rollBtn : nextRoundBtn;		
+			activeBtn = gameEngine.getHouseResult() == null ? rollBtn : nextRoundBtn;
 		}
 		return activeBtn;
 	}
 	
 	/* Animation sets the animated dice icon in the tool bar */
 	public void setDiceImage(int i) {
-		diceIcon = new ImageIcon(diceImages[i]);
+		ImageIcon diceIcon = new ImageIcon(diceImages[i]);
 		diceIcon = new ImageIcon(diceIcon.getImage()
 				.getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH));
 		diceImgAnimation.setIcon(diceIcon);
@@ -188,26 +187,26 @@ public class ToolBar extends JToolBar {
 	}
 	
 	/* Enables bet entry */
-	private void setBetInputEnabled(boolean value) {
-		betBtn.setEnabled(value);
-		betBtn.setFocusable(value);
-		betField.setEditable(value);
-		betField.setFocusable(value);
+	private void setBetInputEnabled(boolean enable) {
+		betBtn.setEnabled(enable);
+		betBtn.setFocusable(enable);
+		betField.setEditable(enable);
+		betField.setFocusable(enable);
 	}
 	
-	public void setRollDiceBtnEnabled(boolean value) {
-		rollBtn.setEnabled(value);
-		rollBtn.setFocusable(value);
+	public void setRollDiceBtnEnabled(boolean enable) {
+		rollBtn.setEnabled(enable);
+		rollBtn.setFocusable(enable);
 	}
 	
-	public void setNextPlayerBtnEnabled(boolean value) {
-		nextPlayerBtn.setEnabled(value);
-		nextPlayerBtn.setFocusable(value);
+	private void setNextPlayerBtnEnabled(boolean enable) {
+		nextPlayerBtn.setEnabled(enable);
+		nextPlayerBtn.setFocusable(enable);
 	}
 	
-	public void setNextRoundBtnEnabled(boolean value) {
-		nextRoundBtn.setEnabled(value);
-		nextRoundBtn.setFocusable(value);
+	public void setNextRoundBtnEnabled(boolean enable) {
+		nextRoundBtn.setEnabled(enable);
+		nextRoundBtn.setFocusable(enable);
 	}
 
 }

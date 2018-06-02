@@ -26,7 +26,7 @@ public interface GameEngineCallback
 	 *            methods if necessary
 	 * @see model.interfaces.GameEngine
 	 */
-	public void intermediateResult(Player player, DicePair dicePair, GameEngine gameEngine);
+	void intermediateResult(Player player, DicePair dicePair, GameEngine gameEngine);
 
 	/**
 	 * 
@@ -41,7 +41,7 @@ public interface GameEngineCallback
 	 *            methods if necessary
 	 * @see model.interfaces.GameEngine
 	 */
-	public void result(Player player, DicePair result, GameEngine gameEngine);
+	void result(Player player, DicePair result, GameEngine gameEngine);
 
 	/**
 	 * called as the HOUSE dice are rolling, use this to update your display or
@@ -54,7 +54,7 @@ public interface GameEngineCallback
 	 *            methods if necessary
 	 * @see model.interfaces.GameEngine
 	 */
-	public void intermediateHouseResult(DicePair dicePair, GameEngine gameEngine);
+	void intermediateHouseResult(DicePair dicePair, GameEngine gameEngine);
 
 	/**
 	 * 
@@ -70,5 +70,5 @@ public interface GameEngineCallback
 	 *            methods if necessary
 	 * @see model.interfaces.GameEngine
 	 */
-	public void houseResult(DicePair result, GameEngine gameEngine);
+	void houseResult(DicePair result, GameEngine gameEngine);
 }

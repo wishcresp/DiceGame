@@ -22,7 +22,7 @@ public class SideBar extends JSplitPane {
 	private JList<String> playerList;
 	private JTextArea gameDetails;
 	
-	public SideBar() {
+	SideBar() {
 		
 		/* Initialize the SplitPane */
 		this.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -55,7 +55,7 @@ public class SideBar extends JSplitPane {
 	}
 	
 	/* Called from MainPanel which is called from main after the MainFrame is constructed */
-	public void addListeners(MainFrame mainFrame, GameEngine gameEngine) {
+	void addListeners(MainFrame mainFrame, GameEngine gameEngine) {
 		SideBarController listener = new SideBarController(mainFrame, gameEngine);
 		playerList.addListSelectionListener(listener);
 		playerList.addKeyListener(listener);
@@ -77,9 +77,9 @@ public class SideBar extends JSplitPane {
 			printPlayerDetails(mainFrame, getSelectedPlayer(gameEngine));
 		/* If house is selected */
 		} else {
-			printHouseDetails(mainFrame);
+			printHouseDetails(mainFrame, gameEngine);
 			/* If house has rolled */
-			if (mainFrame.getHouseResult() != null) {
+			if (gameEngine.getHouseResult() != null) {
 				gameDetails.append("\n");
 				printResults(mainFrame, gameEngine);
 			}
@@ -108,8 +108,7 @@ public class SideBar extends JSplitPane {
 	/* Converts player collection to an ArrayList and gets the player at the index
 	 * of the selected JList element. */
 	public Player getSelectedPlayer(GameEngine gameEngine) {
-		return new ArrayList<>(gameEngine.getAllPlayers())
-				.get(playerList.getSelectedIndex());
+		return gameEngine.getPlayer(playerList.getSelectedIndex());
 	}
 	
 	/* Checks if all players have rolled */
@@ -147,19 +146,18 @@ public class SideBar extends JSplitPane {
 				"Total: " + mainFrame.getDicePanel().getDiceTotal(rollResult)};
 			writeToGameDetails(lines);
 		}
-			
 	}
 	
 	/* Prints house details to text area in UI */
-	private void printHouseDetails(MainFrame mainFrame) {
+	private void printHouseDetails(MainFrame mainFrame, GameEngine gameEngine) {
 		clearGameDetails();
 		String [] lines = {
 			"Name: House"
 		};
 		writeToGameDetails(lines);
 		
-		if (mainFrame.getHouseResult() != null) {
-			DicePair houseResult = mainFrame.getHouseResult();
+		DicePair houseResult = gameEngine.getHouseResult();
+		if (houseResult != null) {
 			lines = new String[] {
 				"Dice 1: " + houseResult.getDice1(),
 				"Dice 2: " + houseResult.getDice2(),
@@ -176,7 +174,7 @@ public class SideBar extends JSplitPane {
 		for (Player player : gameEngine.getAllPlayers()) {
 			String result;
 			int playerRoll = mainFrame.getDicePanel().getDiceTotal(player.getRollResult());
-			int houseRoll = mainFrame.getDicePanel().getDiceTotal(mainFrame.getHouseResult());
+			int houseRoll = mainFrame.getDicePanel().getDiceTotal(gameEngine.getHouseResult());
 			
 			/* Prints player result */
 			result = playerRoll > houseRoll ? "Wins"

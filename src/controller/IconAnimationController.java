@@ -9,15 +9,13 @@ public class IconAnimationController implements ActionListener {
 	
 	private ToolBar toolBar;
 	private int imageVal;
-	private Timer timer;
 	private final int delay = 125;
 	
 	/* Creates a timer to refresh the */
 	public IconAnimationController(ToolBar toolBar) {
 		this.toolBar = toolBar;
 		imageVal = 0;
-		timer = new Timer(delay, this);
-		timer.start();
+		new Timer(delay, this).start();
 	}
 	
 	/* Timer manages GUI update for the rotating icon on the toolbar.

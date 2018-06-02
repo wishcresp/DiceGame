@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -9,7 +10,7 @@ import javax.swing.KeyStroke;
 import controller.MenuBarController;
 import model.interfaces.GameEngine;
 
-public class MenuBar extends JMenuBar {
+class MenuBar extends JMenuBar {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -17,9 +18,9 @@ public class MenuBar extends JMenuBar {
 	private JMenuItem savePlayers, loadPlayers, exit, addPlayer, removePlayer,
 			removeAllPlayers, rules, shortcuts, about;
 	
-	public MenuBar() {
+	MenuBar() {
 		
-		/* Menu's*/
+		/* Menus */
 		file = new JMenu("File");
 		players = new JMenu("Manage Players");
 		help = new JMenu("Help");
@@ -47,19 +48,19 @@ public class MenuBar extends JMenuBar {
 		
 		/* Menu keyboard shortcuts */
 		loadPlayers.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+				KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
 		savePlayers.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+				KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
 		addPlayer.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+				KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
 		removePlayer.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_R, ActionEvent.CTRL_MASK));
+				KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));
 		removeAllPlayers.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_R, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+				KeyEvent.VK_R, InputEvent.SHIFT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK));
 		exit.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_F4, ActionEvent.ALT_MASK));
+				KeyEvent.VK_F4, InputEvent.ALT_DOWN_MASK));
 		rules.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_H, ActionEvent.CTRL_MASK));
+				KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK));
 		
 		/* Construct menu */
 		file.add(loadPlayers);
@@ -71,16 +72,15 @@ public class MenuBar extends JMenuBar {
 		help.add(rules);
 		help.add(shortcuts);
 		help.add(about);
-		
-		/* Disable focus */
-		this.setFocusable(false);
-		
 		this.add(file);
 		this.add(players);
 		this.add(help);
+		
+		/* Disable focus */
+		this.setFocusable(false);
 	}
 	
-	public void addListeners(MainFrame mainFrame, GameEngine gameEngine) {		
+	void addListeners(MainFrame mainFrame, GameEngine gameEngine) {
 		MenuBarController listener = new MenuBarController(mainFrame, gameEngine);
 		savePlayers.addActionListener(listener);
 		loadPlayers.addActionListener(listener);

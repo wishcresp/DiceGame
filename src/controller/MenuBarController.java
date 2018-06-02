@@ -5,10 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 import loader.GameLoaderException;
 import loader.GameLoaderText;
-import loader.interfaces.GameLoader;
 import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
@@ -18,7 +16,7 @@ public class MenuBarController implements ActionListener {
 
 	private GameEngine gameEngine;
 	private MainFrame mainFrame;
-	private GameLoader loader;
+	private GameLoaderText loader;
 	
 	private static final String filePath = "players.txt";
 	
@@ -116,7 +114,7 @@ public class MenuBarController implements ActionListener {
 	
 	/* Shows the add player dialog box for input */
 	private void addPlayer() {
-		mainFrame.setHouseResult(null);
+		gameEngine.clearHouseResult();
 		mainFrame.getAddPlayerDialog().centerDialogToMainWindow(mainFrame);
 		mainFrame.getAddPlayerDialog().setVisible(true);
 	}
@@ -128,7 +126,7 @@ public class MenuBarController implements ActionListener {
 			gameEngine.removePlayer(player);
 		}
 		/* Resets the house result and updates GUI */
-		mainFrame.setHouseResult(null);
+		gameEngine.clearHouseResult();
 		mainFrame.getAddPlayerDialog().clearPlayerInput();
 		mainFrame.getSideBar().refreshPlayerList(gameEngine);
 		mainFrame.getToolBar().refresh(mainFrame, gameEngine);	
@@ -160,7 +158,7 @@ public class MenuBarController implements ActionListener {
 	
 	/* Creates a dialog containing 'about' information */
 	private void openAbout() {
-		String message = "SADI Assigment 2 - Dice Game. 2018. Made by Sean Martin.";
+		String message = "SADI Assignment 2 - Dice Game. 2018. Made by Sean Martin.";
 		JOptionPane.showMessageDialog(new JFrame(), message, "About", 
 				JOptionPane.INFORMATION_MESSAGE);
 	}

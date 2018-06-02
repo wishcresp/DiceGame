@@ -4,7 +4,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
-
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
 
@@ -24,7 +23,7 @@ public class StatusBar extends JToolBar {
 			"The round has ended. Bets were resolved. Ready to start new round."
 	};
 	
-	public StatusBar() {
+	StatusBar() {
 		message = new JLabel(defaultLabel, JLabel.CENTER);
 		message.setFont(new Font(null, Font.ITALIC + Font.BOLD, 14));
 		this.add(message);
@@ -56,13 +55,12 @@ public class StatusBar extends JToolBar {
 			setLabel(messages[message], player);
 		/* House is selected */
 		} else {
-			int message = 
-					/* If all players have rolled*/
-					!mainFrame.getSideBar().allPlayersRolled(gameEngine) ? 3 :
+			/* If all players have rolled */
+			int message = !mainFrame.getSideBar().allPlayersRolled(gameEngine) ? 3
 					/* If house has not rolled */
-					mainFrame.getHouseResult() == null ? 4 :
+					: gameEngine.getHouseResult() == null ? 4
 					/* If house has rolled */
-					5;
+					: 5;
 			setLabel(messages[message]);
 		}
 	}

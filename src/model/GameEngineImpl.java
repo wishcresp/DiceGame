@@ -2,8 +2,8 @@ package model;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
 import model.interfaces.DicePair;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
@@ -14,8 +14,10 @@ import java.util.ArrayList;
 public class GameEngineImpl implements GameEngine {
 	
 	/* Collections for Storing Callbacks and Players */
-	private ArrayList<Player> playerList = new ArrayList<>();
-	private ArrayList<GameEngineCallback> callbackList = new ArrayList<>();
+	private List<Player> playerList = new ArrayList<>();
+	private List<GameEngineCallback> callbackList = new ArrayList<>();
+	/* DicePair storing house roll */
+	private DicePair houseResult = null;
 	
 	/* Returns the player's bet */
 	@Override
@@ -44,27 +46,27 @@ public class GameEngineImpl implements GameEngine {
 	public void rollHouse(int initialDelay, int finalDelay,
 			int delayIncrement) {
 		
-		DicePair dicePair = roll(null, initialDelay, finalDelay,
+		houseResult = roll(null, initialDelay, finalDelay,
 				delayIncrement, false);
 		
 		/* Exception can occur if a player is added or the game is reset while
 		 * the house is rolling */
 		try {
 			/* Checks if players win against the house */
-			resolveBets(dicePair);
+			resolveBets(houseResult);
 			
 			/* Reports results to callback */
 			for (GameEngineCallback callback : callbackList) {
-				callback.houseResult(dicePair, this);
+				callback.houseResult(houseResult, this);
 			}
 		} catch (NullPointerException e) {
-			System.err.println("\nGAMEENGINE ERROR: Players were modified while "
+			System.err.println("\nGame Engine Error: Players were modified while "
 					+ "house was rolling. Bets were not resolved.");
 		}
 		
 	}
 	
-	/* Shared code for rolling dice. Returns a dicepair */
+	/* Shared code for rolling dice. Returns a DicePair */
 	private DicePair roll(Player player, int initialDelay, int finalDelay,
 			int delayIncrement, boolean isPlayer) {
 		
@@ -80,7 +82,7 @@ public class GameEngineImpl implements GameEngine {
 				e.printStackTrace();
 			}
 			
-			/* Initializes dicepair and rolls dice */
+			/* Initializes DicePair and rolls dice */
 			DicePair dicePair = rollDice();
 					
 			/* Checks if player or house is rolling and calls appropriate
@@ -129,22 +131,19 @@ public class GameEngineImpl implements GameEngine {
 		playerList.add(player);
 	}
 
-	/* Returns the player with the specified ID */
+	/* Returns the player with the requested position */
 	@Override
-	public Player getPlayer(String id) {
-		for (Player player: playerList) {
-			if (player.getPlayerId().equals(id)) {
-				return player;
-			}
-		}
+	public Player getPlayer(int index) {
+		if (index >= 0 && index < playerList.size())
+			return playerList.get(index);
 		return null;
 	}
 
 	/* Removes a player from the collection */
 	@Override
-	public boolean removePlayer(Player player) {
-		return playerList.remove(player);
-	}
+	public void removePlayer(Player player) {
+        playerList.remove(player);
+    }
 	
 	/* Adds a GameEngineCallback to a collection */
 	@Override
@@ -164,5 +163,17 @@ public class GameEngineImpl implements GameEngine {
 	public Collection<Player> getAllPlayers() {
 		return Collections.unmodifiableCollection(playerList);
 	}
-
+	
+	/* Returns the house result */
+	@Override
+	public DicePair getHouseResult() {
+		return this.houseResult;
+	}
+	
+	/* Clears the house result */
+	@Override
+	public void clearHouseResult() {
+		this.houseResult = null;
+	}
+	
 }

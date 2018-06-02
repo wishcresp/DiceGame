@@ -25,7 +25,7 @@ public class AddPlayerDialogController implements ActionListener {
 	}
 
 	/* Loads player from the 'Add player dialog' gui frame and adds it to the gameEngine */
-	public void loadPlayerFromGUI() {
+	private void loadPlayerFromGUI() {
 		try {
 			/* New id = the number of players + 1
 			 * Testing for duplicate ID's was not implemented since

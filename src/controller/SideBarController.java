@@ -42,7 +42,7 @@ public class SideBarController extends KeyAdapter implements ListSelectionListen
 						.getSelectedPlayer(gameEngine).getRollResult());
 			/* Else draw houses dice pair*/
 			} else {
-				mainFrame.getDicePanel().refresh(mainFrame, mainFrame.getHouseResult());
+				mainFrame.getDicePanel().refresh(mainFrame, gameEngine.getHouseResult());
 			}
 		}
 	}

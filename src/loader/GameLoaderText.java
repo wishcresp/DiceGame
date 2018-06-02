@@ -8,12 +8,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import loader.interfaces.GameLoader;
 import model.SimplePlayer;
 import model.interfaces.Player;
 
-public class GameLoaderText implements GameLoader {
+public class GameLoaderText {
 	
 	private final String delimiter = ",";
 	private final String FOFMessage = "File not found. Please check 'players.txt' exists.";
@@ -22,7 +20,6 @@ public class GameLoaderText implements GameLoader {
 	private final String NFMessage = "Error: Formatting of 'players.txt' is 'id,name,points'. "
 			+ "Each player should be on a new line. Points must be an integer.";
 	
-	@Override
 	public Collection<Player> loadAllPlayers(String path) throws GameLoaderException {
 		
 		try {
@@ -56,8 +53,7 @@ public class GameLoaderText implements GameLoader {
 		player = new SimplePlayer(tokens[0], tokens[1], Integer.parseInt(tokens[2]));
 		return player;
 	}
-
-	@Override
+	
 	public void saveAllPlayers(String path, Collection<Player> players) throws GameLoaderException {
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(path), 'w');
@@ -69,16 +65,6 @@ public class GameLoaderText implements GameLoader {
 			throw new GameLoaderException(IOMessage);
 		}
 		
-	}
-
-	@Override
-	public void appendPlayer(String path, Player player) throws GameLoaderException {
-		try {
-			BufferedWriter out = new BufferedWriter(new FileWriter(path), 'a');
-			writePlayer(out, player);
-		} catch (IOException e) {
-			throw new GameLoaderException(IOMessage);
-		}
 	}
 	
 	private void writePlayer(BufferedWriter out, Player player) throws IOException {
